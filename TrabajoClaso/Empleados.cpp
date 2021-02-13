@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <vector>
+#include <list>
 
 void Empleados::generarEmpleados()
 {
@@ -62,13 +62,18 @@ bool Empleados::existeEmpleado(int codigo)
 void Empleados::lista()
 {
 	std::cout << "Hola\n";
-	std::vector<int> l(10);
+	std::list<int> l;
 
-	for (int i = 0; i < 10; i++)
+	do
 	{
-		l.push_back((rand() % 10) + 1);
+		l.push_back(rand() % 100);
 
-	}
+		//l.sort();
+		l.unique();
+
+
+	} while (l.size() != 100);
+
 
 	for (int n : l)
 	{
