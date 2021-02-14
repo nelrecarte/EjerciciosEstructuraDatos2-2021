@@ -19,9 +19,12 @@ std::vector<fileEntry> entries;
 
 void header::crearDisco()
 {
+	char nomDisco[30];
 
 	std::cout << "Ingrese nombre disco: ";
 	std::cin >> info.nombreDisco;
+
+	strcpy_s(nomDisco, info.nombreDisco);
 
 	std::cout << "\nIngrese propietario disco: ";
 	std::cin >> info.propietario;
@@ -34,7 +37,7 @@ void header::crearDisco()
 
 	info.sizeMapaB = ceil(info.cantBloques / 8);
 
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary | std::ios::app);
+	std::fstream archivoDisco(nomDisco, std::ios::in | std::ios::binary | std::ios::app);
 
 	if (!archivoDisco)
 	{
@@ -65,7 +68,7 @@ void header::crearDisco()
 void header::initBitMap(char* nombreDisco, int cantEntradas)
 {
 	
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary | std::ios::app);
+	std::fstream archivoDisco(nombreDisco, std::ios::in | std::ios::binary | std::ios::app);
 
 	if (!archivoDisco)
 	{
@@ -89,7 +92,7 @@ void header::initBitMap(char* nombreDisco, int cantEntradas)
 void header::initFileEntries(char* nombreDisco, int cantEntradas)
 {
 	
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary | std::ios::app);
+	std::fstream archivoDisco(nombreDisco, std::ios::in | std::ios::binary | std::ios::app);
 
 	if (!archivoDisco)
 	{
@@ -120,7 +123,7 @@ void header::initFileEntries(char* nombreDisco, int cantEntradas)
 
 void header::initDataBlocks()
 {
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary | std::ios::app);
+	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::binary | std::ios::app);
 
 	if (!archivoDisco)
 	{
@@ -134,7 +137,7 @@ void header::initDataBlocks()
 	for (int i = 0; i < info.cantBloques; i++)
 	{
 		archivoDisco.write(reinterpret_cast<const char*>(&bloques), sizeof(bloquesDato));
-		std::cout << i << "\n";
+		//std::cout << i << "\n";
 	}
 
 	archivoDisco.close();
@@ -144,10 +147,10 @@ void header::initDataBlocks()
 void header::cargarDisco()
 {
 	char nombreDisco[30];
-	std::cout << "\nIngrese nombre de Disco: ";
+	std::cout << "\nIngrese nombre de Disco a cargar: ";
 	std::cin >> nombreDisco;
 
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary);
+	std::fstream archivoDisco(nombreDisco, std::ios::in | std::ios::binary);
 
 	if (!archivoDisco)
 	{
@@ -158,6 +161,8 @@ void header::cargarDisco()
 	archivoDisco.seekg(0, std::ios::beg);
 
 	archivoDisco.read(reinterpret_cast<char*>(&info), sizeof(metaData));
+	cargarBitMap();
+	cargarFileEntries();
 
 	archivoDisco.close();
 	 
@@ -167,7 +172,7 @@ void header::cargarBitMap()
 {
 	bitm.bitMap = new char[ceil(info.cantBloques / 8)];
 
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary);
+	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::binary);
 
 	if (!archivoDisco)
 	{
@@ -185,7 +190,7 @@ void header::cargarBitMap()
 
 void header::cargarFileEntries()
 {
-	std::fstream archivoDisco("hola2.bin", std::ios::in | std::ios::binary);
+	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::binary);
 
 	if (!archivoDisco)
 	{
@@ -215,7 +220,7 @@ void header::crearDirectorio()
 	std::cout << "\nIngrese nombre directorio nuevo: ";
 	std::cin >> nombreDir;
 
-	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::binary);
+	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::out | std::ios::binary);
 
 	if (!archivoDisco)
 	{
@@ -227,6 +232,7 @@ void header::crearDirectorio()
 	archivoDisco.read(reinterpret_cast<char*>(&info), sizeof(metaData));
 	archivoDisco.read(reinterpret_cast<char*>(&bitm), sizeof(bitMap));
 
+	std::cout << info.propietario << "\n";
 	long pos = archivoDisco.tellg();
 	archivoDisco.read(reinterpret_cast<char*>(&entry), sizeof(fileEntry));
 
@@ -243,11 +249,13 @@ void header::crearDirectorio()
 			entry.primerBloq = -1;
 			entry.available = false;
 
-			archivoDisco.seekp(pos, std::ios::beg);
+			archivoDisco.seekp(pos);
 			archivoDisco.write(reinterpret_cast<char*>(&entry), sizeof(fileEntry));
+			//entries.push_back(entry);
 			archivoDisco.close();
 
 			std::cout << "Directorio Creado";
+			entries[i] = entry;
 			return;
 			
 		} 
@@ -263,14 +271,24 @@ void header::elimDirectorio()
 
 }
 
-void header::listarDirectorio()
+void header::listar()
 {
-
+	for (auto elem : entries)
+	{
+		if (elem.available == false)
+		{
+			std::cout << "\nNombre: " << "\tTipo: "  "\tTamano: " "\n";
+			std::cout << "\n " << elem.name << "\t" << elem.type <<  "\t" << elem.size << "\n";
+		}
+	}
 }
 
 void header::importFile()
 {
-	char nombreArchivo[30]; 
+	std::vector<int> numBloques;
+	int canBloques;
+
+	char nombreArchivo[30];
 	std::cout << "\nIngrese nombre de archivo a importar: ";
 	std::cin >> nombreArchivo;
 
@@ -280,6 +298,14 @@ void header::importFile()
 	{
 		std::cout << "Error";
 		throw 3;
+	}
+
+	std::fstream archivoImportar(nombreArchivo, std::ios::binary | std::ios::ate);
+
+	if (!archivoImportar)
+	{
+		std::cout << "Error Archivo";
+		throw 4;
 	}
 
 	archivoDisco.seekg(0, std::ios::beg);
@@ -295,18 +321,20 @@ void header::importFile()
 		{
 			strcpy_s(entry.name, nombreArchivo);
 			entry.type = 'A';
-			//entry.size = sizeof(fileEntry);
+			entry.size = archivoImportar.tellg();
 			entry.padre = 0;
 			entry.nextSibling = -1;
 			entry.hijo = -1;
-			entry.primerBloq = -1;
+			entry.primerBloq = -1; //actualizar a primer bloque de dato que corresponde al archivo 
 			entry.available = false;
+
+			canBloques = ceil(entry.size / 4096);
 
 			archivoDisco.seekp(pos, std::ios::beg);
 			archivoDisco.write(reinterpret_cast<char*>(&entry), sizeof(fileEntry));
 			archivoDisco.close();
 
-			std::cout << "Directorio Creado";
+			std::cout << "Archivo  Importado";
 			return;
 
 		}
@@ -318,11 +346,36 @@ void header::importFile()
 
 	//reservar file entry
 	//ver tam archivo 
- // reservar datablocks 
+	//reservar datablocks 
 	//encontrar primerdatblock vacio en bitmap 
+
+	archivoDisco.close();
+	std::cout << "\nCantidad Maxima de File Entries, no se ha Importado \n";
+}
+
+void header::actualizarBM(int cantidadBitsEncender)
+{
+	std::fstream archivoDisco(info.nombreDisco, std::ios::in | std::ios::binary);
+
+	if (!archivoDisco)
+	{
+		std::cout << "Error";
+		throw 3;
+	}
+
+	archivoDisco.seekg(0, std::ios::beg);
+	archivoDisco.read(reinterpret_cast<char*>(&info), sizeof(metaData));
+
+	long pos = archivoDisco.tellg();
+
+	archivoDisco.read(reinterpret_cast<char*>(&bitm), sizeof(ceil(info.cantBloques / 8)));
+
+
 
 
 }
+
+
 
 void header::exportFile()
 {

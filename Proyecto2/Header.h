@@ -24,9 +24,10 @@ public:
 
 	void crearDirectorio(); 
 	void elimDirectorio(); 
-	void listarDirectorio(); 
+	void listar(); 
 	void importFile();
 	void exportFile();
 
+	void actualizarBM(int);
 };
 #endif // !HEADER_H

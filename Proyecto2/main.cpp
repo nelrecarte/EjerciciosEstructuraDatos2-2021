@@ -26,6 +26,26 @@ int main()
 			break;
 		case 2:
 			func.cargarDisco();
+
+			do
+			{
+				std::cout << "\n-Disco-";
+				std::cout << "\n1. Crear Dir";
+				std::cout << "\n2. Listar";
+				std::cout << "\n3. Salir\n";
+				std::cin >> opcion;
+				switch (opcion)
+				{
+				case 1:
+					func.crearDirectorio();
+					break;
+				case 2:
+					func.listar();
+					break;
+				case 3:
+					break;
+				}
+			} while (opcion != 3);
 			break;
 		case 3:
 			break;
