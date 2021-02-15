@@ -6,6 +6,7 @@
 struct bitMap
 {
 	char* bitMap;
+	int tamano;
 };
 
 #endif // !bitMap

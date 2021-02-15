@@ -17,6 +17,7 @@ int main()
 		std::cout << "\n1. Crear Disco";
 		std::cout << "\n2. Cargar Disco";
 		std::cout << "\n3. Salir\n";
+		std::cout << "\nOpcion: ";
 		std::cin >> opcion;
 
 		switch (opcion)
@@ -32,7 +33,10 @@ int main()
 				std::cout << "\n-Disco-";
 				std::cout << "\n1. Crear Dir";
 				std::cout << "\n2. Listar";
-				std::cout << "\n3. Salir\n";
+				std::cout << "\n3. Eliminar";
+				std::cout << "\n4. Importar";
+				std::cout << "\n5. Regresar menu anterior\n";
+				std::cout << "\nOpcion: ";
 				std::cin >> opcion;
 				switch (opcion)
 				{
@@ -43,9 +47,15 @@ int main()
 					func.listar();
 					break;
 				case 3:
+					func.eliminar();
+					break;
+				case 4:
+					func.importFile();
+					break;
+				case 5: 
 					break;
 				}
-			} while (opcion != 3);
+			} while (opcion != 5);
 			break;
 		case 3:
 			break;

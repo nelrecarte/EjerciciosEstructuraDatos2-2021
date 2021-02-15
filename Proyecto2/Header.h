@@ -23,11 +23,15 @@ public:
 	void cargarFileEntries();
 
 	void crearDirectorio(); 
-	void elimDirectorio(); 
+	void eliminar(); 
 	void listar(); 
 	void importFile();
 	void exportFile();
 
 	void actualizarBM(int);
+	int primerBitDisp();
+	void setOn(char**, int);
+	void printbitMap(char*);
+
 };
 #endif // !HEADER_H
