@@ -18,9 +18,27 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Header.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bloquesDato.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metaData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bloquesDato.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bitMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,10 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bloquesDato.cpp" />
+    <ClCompile Include="Header.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bitMap.h" />
+    <ClInclude Include="bloquesDato.h" />
+    <ClInclude Include="fileEntry.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="metaData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
