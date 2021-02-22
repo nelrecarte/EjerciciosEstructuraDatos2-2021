@@ -7,7 +7,8 @@
 void initBitMap(char*);
 void printbitMap(char*);
 void setOn(char*, int);
-void setOff(char*, int);
+void setOff(char*, int); 
+void corrimiento(char*, int );
 
 int main()
 {
@@ -41,6 +42,12 @@ int main()
 
 	printbitMap(bitmap);
 
+	std::cout << "\n Ingrese numero de bloque a correr: ";
+	std::cin >> numeroBloque;
+
+	corrimiento(bitmap, numeroBloque);
+
+	printbitMap(bitmap);
 	_getch();
 }
 
@@ -93,6 +100,22 @@ void setOn(char* bitMap, int nBlock)
 		}
 	}
 }
+
+void corrimiento(char* bitMap, int nBlock)
+{
+	int posicionByte = nBlock / 8;
+	int posicionInicial = (nBlock / 8) * 8;
+
+	for (int i = posicionInicial, x = 1; i < (posicionByte * 8) + 8; i++)
+	{
+		if (i == nBlock)
+		{
+			bitMap[posicionByte] = bitMap[posicionByte] << x;
+			break;
+		}
+	}
+}
+
 
 void setOff(char* bitMap, int nBlock)
 {
