@@ -15,10 +15,9 @@ class Empleados
 
 public: 
 	static void generarEmpleados();
-	static bool existeEmpleado(int);
-
-
-	static void lista();
+	
+	static void busquedaSecuencial();
+	static void busquedaBinaria();
 
 
 };
