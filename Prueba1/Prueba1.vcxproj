@@ -140,9 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DataFile.h" />
+    <ClInclude Include="DelimeterVarSize_Register.h" />
+    <ClInclude Include="FixedSizeRegister.h" />
+    <ClInclude Include="KnownVarSize_Register.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataFile.cpp" />
+    <ClCompile Include="FixedSizeRegister.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
